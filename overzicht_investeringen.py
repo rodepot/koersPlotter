@@ -11,7 +11,7 @@
 import plotly.offline as py
 import plotly.graph_objs as go
 import plotly.figure_factory as ff
-py.init_notebook_mode(connected=True)
+#py.init_notebook_mode(connected=True)
 import json as js
 import numpy as np
 import pandas as pd
