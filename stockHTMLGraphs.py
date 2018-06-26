@@ -13,32 +13,35 @@
 import plotly.offline as py
 
 # In[2]:
+baseURLohlcv = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&'
+baseURLprice = 'http://tools.morningstar.nl/api/rest.svc/timeseries_price/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&priceType=&outputType=COMPACTJSON&'
 
-
-url_Nor = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&id=0P00009QWG]3]0]E0WWE$$ALL'
-url_Ves = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&id=0P0000BHUH]3]0]E0WWE$$ALL'
-url_Bas = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&id=0P0000GGBW]3]0]E0WWE$$ALL'
-url_Int = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&id=0P0000S9DK]3]0]E0WWE$$ALL'
-url_Gee = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&id=0P0000CJJC]3]0]E0WWE$$ALL'
-url_Eck = 'http://tools.morningstar.nl/api/rest.svc/timeseries_price/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&priceType=&outputType=COMPACTJSON&id=0P0000U0D2]2]0]ETALL$$ALL'
-url_Can = 'http://tools.morningstar.nl/api/rest.svc/timeseries_price/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&priceType=&outputType=COMPACTJSON&id=F00000QU91]2]0]ETALL$$ALL'
-url_Rob = 'http://tools.morningstar.nl/api/rest.svc/timeseries_price/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&priceType=&outputType=COMPACTJSON&id=F00000QDBO]2]0]ETALL$$ALL'
-url_Sil = 'http://tools.morningstar.nl/api/rest.svc/timeseries_price/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&priceType=&outputType=COMPACTJSON&id=0P0000I5NQ]2]0]ETALL$$ALL'
-url_VTS = 'http://tools.morningstar.nl/api/rest.svc/timeseries_price/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&priceType=&outputType=COMPACTJSON&id=0P00002DAJ]2]0]ETALL$$ALL'
-url_VTB = 'http://tools.morningstar.nl/api/rest.svc/timeseries_price/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&priceType=&outputType=COMPACTJSON&id=0P0000896G]2]0]ETALL$$ALL'
+url_Nor = 'id=0P00009QWG]3]0]E0WWE$$ALL'
+url_Ves = 'id=0P0000BHUH]3]0]E0WWE$$ALL'
+url_Bas = 'id=0P0000GGBW]3]0]E0WWE$$ALL'
+url_Int = 'id=0P0000S9DK]3]0]E0WWE$$ALL'
+url_Gee = 'id=0P0000CJJC]3]0]E0WWE$$ALL'
+url_Coo = 'id=0P000001HE]3]0]E0WWE$$ALL'
+url_Eck = 'id=0P0000U0D2]2]0]ETALL$$ALL'
+url_Can = 'id=F00000QU91]2]0]ETALL$$ALL'
+url_Rob = 'id=F00000QDBO]2]0]ETALL$$ALL'
+url_Sil = 'id=0P0000I5NQ]2]0]ETALL$$ALL'
+url_VTS = 'id=0P00002DAJ]2]0]ETALL$$ALL'
+url_VTB = 'id=0P0000896G]2]0]ETALL$$ALL'
 
 stock = [
-        ['BASF','2015-08-18',url_Bas,'ohlcv','#d62728'],
-        ['InterX','2016-10-24',url_Int,'ohlcv','#9467bd'],
-        ['Nordex','2017-02-16',url_Nor,'ohlcv','#1f77b4'],
-        ['Vestas','2017-02-16',url_Ves,'ohlcv','#17becf'], 
-        ['Geely','2017-11-21',url_Gee,'ohlcv','#2ca02c'],
-        ['vanEck','2017-03-23',url_Eck,'price','#7f7f7f'],
-        ['Candriam','2015-04-13',url_Can,'price','#ff7f0e'],
-        ['RobAgri','2015-06-26',url_Rob,'price','#2ca02c'],
-        ['Silver','2015-05-22',url_Sil,'price','#8c564b'],
-        ['VTStock','2016-03-31',url_VTS,'price','#e377c2'],
-        ['VTBond','2016-03-31',url_VTB,'price','#bcbd22'],   
+        ['BASF','2015-08-18',baseURLohlcv+url_Bas,'ohlcv','#d62728'],
+        ['InterX','2016-10-24',baseURLohlcv+url_Int,'ohlcv','#9467bd'],
+        ['Nordex','2017-02-16',baseURLohlcv+url_Nor,'ohlcv','#1f77b4'],
+        ['Vestas','2017-02-16',baseURLohlcv+url_Ves,'ohlcv','#17becf'], 
+        ['Geely','2017-11-21',baseURLohlcv+url_Gee,'ohlcv','#2ca02c'],
+        ['Cooper','2018-06-01',baseURLohlcv+url_Coo,'ohlcv','#cca0cc'], 
+        ['vanEck','2017-03-23',baseURLprice+url_Eck,'price','#7f7f7f'],
+        ['Candriam','2015-04-13',baseURLprice+url_Can,'price','#ff7f0e'],
+        ['RobAgri','2015-06-26',baseURLprice+url_Rob,'price','#2ca02c'],
+        ['Silver','2015-05-22',baseURLprice+url_Sil,'price','#8c564b'],
+        ['VTStock','2016-03-31',baseURLprice+url_VTS,'price','#e377c2'],
+        ['VTBond','2016-03-31',baseURLprice+url_VTB,'price','#bcbd22'],   
         ]
 
 
@@ -73,10 +76,19 @@ for ii in range(0,len(stock)):
     tracer.append(scatterStockData(df_Koers,stock[ii][0],stock[ii][4]))
     tracer.append(scatterStockBuy(df_Koers,stock[ii][0],stock[ii][1],stock[ii][4])) 
 
-fig = {'data': tracer}
+fig = {'data': tracer, 'layout': {
+        'xaxis': {'title': 'Datum'},
+        'yaxis': {'title': 'Koers [EUR]', 'type': 'lin'}
+    }}
 
 py.plot(fig, filename='koersen.html')
 
+fig = {'data': tracer, 'layout': {
+        'xaxis': {'title': 'Datum'},
+        'yaxis': {'title': 'Koers [EUR]', 'type': 'log'}
+    }}
+
+py.plot(fig, filename='log_koersen.html')
 
 
 # In[7]: Plot the normalized data
@@ -89,7 +101,17 @@ for ii in range(0,len(stock)):
 #scatter a line at unity
 tracer.append(scatterUnity(df_NKoers))
 
-fig = {'data': tracer}
+fig = {'data': tracer, 'layout': {
+        'xaxis': {'title': 'Datum'},
+        'yaxis': {'title': 'Koers aankoop genormalizeerd [-]', 'type': 'lin'}
+    }}
 
 py.plot(fig,filename='koersen_norm.html')
+
+fig = {'data': tracer, 'layout': {
+        'xaxis': {'title': 'Datum'},
+        'yaxis': {'title': 'Koers aankoop genormalizeerd [-]', 'type': 'log'}
+    }}
+
+py.plot(fig,filename='log_koersen_norm.html')
 
