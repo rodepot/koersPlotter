@@ -35,7 +35,7 @@ stock = [
         ['Nordex','2017-02-16',baseURLohlcv+url_Nor,'ohlcv','#1f77b4'],
         ['Vestas','2017-02-16',baseURLohlcv+url_Ves,'ohlcv','#17becf'], 
         ['Geely','2017-11-21',baseURLohlcv+url_Gee,'ohlcv','#2ca02c'],
-        ['Cooper','2018-06-01',baseURLohlcv+url_Coo,'ohlcv','#cca0cc'], 
+        ['Cooper','2018-06-07',baseURLohlcv+url_Coo,'ohlcv','#cca0cc'], 
         ['vanEck','2017-03-23',baseURLprice+url_Eck,'price','#7f7f7f'],
         ['Candriam','2015-04-13',baseURLprice+url_Can,'price','#ff7f0e'],
         ['RobAgri','2015-06-26',baseURLprice+url_Rob,'price','#2ca02c'],
@@ -103,14 +103,14 @@ tracer.append(scatterUnity(df_NKoers))
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum'},
-        'yaxis': {'title': 'Koers aankoop genormalizeerd [-]', 'type': 'lin'}
+        'yaxis': {'title': 'Koers aankoop genormaliseerd [-]', 'type': 'lin'}
     }}
 
 py.plot(fig,filename='koersen_norm.html')
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum'},
-        'yaxis': {'title': 'Koers aankoop genormalizeerd [-]', 'type': 'log'}
+        'yaxis': {'title': 'Koers aankoop genormaliseerd [-]', 'type': 'log'}
     }}
 
 py.plot(fig,filename='log_koersen_norm.html')
