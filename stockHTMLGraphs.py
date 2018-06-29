@@ -46,6 +46,9 @@ stock = [
         ['Gold','2018-06-28',baseURLprice+url_Gol,'price','#ac1d22'],		
         ]
 
+import datetime
+today = str(datetime.date.today())
+ytd = str(datetime.date.today() - datetime.timedelta(12*365/12))
 
 
 # In[3]: Get all data and put it in one variable (df_Koers)
@@ -79,14 +82,14 @@ for ii in range(0,len(stock)):
     tracer.append(scatterStockBuy(df_Koers,stock[ii][0],stock[ii][1],stock[ii][4])) 
 
 fig = {'data': tracer, 'layout': {
-        'xaxis': {'title': 'Datum'},
+        'xaxis': {'title': 'Datum', 'range': [ytd,today]},
         'yaxis': {'title': 'Koers [EUR]', 'type': 'lin'}
     }}
 
 py.plot(fig, filename='koersen.html')
 
 fig = {'data': tracer, 'layout': {
-        'xaxis': {'title': 'Datum'},
+        'xaxis': {'title': 'Datum', 'range': [ytd,today]},
         'yaxis': {'title': 'Koers [EUR]', 'type': 'log'}
     }}
 
@@ -104,14 +107,14 @@ for ii in range(0,len(stock)):
 tracer.append(scatterUnity(df_NKoers))
 
 fig = {'data': tracer, 'layout': {
-        'xaxis': {'title': 'Datum'},
+        'xaxis': {'title': 'Datum', 'range': [ytd,today]},
         'yaxis': {'title': 'Koers aankoop genormaliseerd [-]', 'type': 'lin'}
     }}
 
 py.plot(fig,filename='koersen_norm.html')
 
 fig = {'data': tracer, 'layout': {
-        'xaxis': {'title': 'Datum'},
+        'xaxis': {'title': 'Datum', 'range': [ytd,today]},
         'yaxis': {'title': 'Koers aankoop genormaliseerd [-]', 'type': 'log'}
     }}
 
