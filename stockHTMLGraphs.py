@@ -28,6 +28,7 @@ url_Rob = 'id=F00000QDBO]2]0]ETALL$$ALL'
 url_Sil = 'id=0P0000I5NQ]2]0]ETALL$$ALL'
 url_VTS = 'id=0P00002DAJ]2]0]ETALL$$ALL'
 url_VTB = 'id=0P0000896G]2]0]ETALL$$ALL'
+url_Gol = 'id=0P00002DCW]2]0]ETALL$$ALL'
 
 stock = [
         ['BASF','2015-08-18',baseURLohlcv+url_Bas,'ohlcv','#d62728'],
@@ -41,7 +42,8 @@ stock = [
         ['RobAgri','2015-06-26',baseURLprice+url_Rob,'price','#2ca02c'],
         ['Silver','2015-05-22',baseURLprice+url_Sil,'price','#8c564b'],
         ['VTStock','2016-03-31',baseURLprice+url_VTS,'price','#e377c2'],
-        ['VTBond','2016-03-31',baseURLprice+url_VTB,'price','#bcbd22'],   
+        ['VTBond','2016-03-31',baseURLprice+url_VTB,'price','#bcbd22'],  
+        ['Gold','2018-06-28',baseURLprice+url_Gol,'price','#ac1d22'],		
         ]
 
 
