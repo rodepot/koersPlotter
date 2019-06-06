@@ -45,7 +45,7 @@ stock = [
         ['VTStock','2016-03-31',baseURLprice+url_VTS,'price','#e377c2'],
         ['VTBond','2016-03-31',baseURLprice+url_VTB,'price','#bcbd22'],  
         ['Gold','2018-08-31',baseURLprice+url_Gol,'price','#ac1d22'],
-        ['VAsiaPac','2018-12-24',baseURLprice+url_Gol,'price','#a01de2'],	
+        ['VAsiaPac','2018-12-24',baseURLprice+url_VAP,'price','#a01de2'],	
         ]
 
 import datetime
