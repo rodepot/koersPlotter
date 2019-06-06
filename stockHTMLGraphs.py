@@ -66,9 +66,31 @@ for ii in range(1,len(stock)):
 # In[5]: Normalize data to date of purchase
 
 df_NKoers = df_Koers.copy()
+df_DKoers = df_Koers.copy()
+
 #loop over stocks
 for ii in range(0,len(stock)):
     df_NKoers[stock[ii][0]] /= df_Koers.loc[stock[ii][1],stock[ii][0]]
+    print(stock[ii][0])
+    #print(df_Koers.columns.get_loc(stock[ii][0]))
+    laatsteKoers = df_Koers.iloc[-1,df_Koers.columns.get_loc(stock[ii][0])]
+    print(laatsteKoers)
+    if laatsteKoers > 0:
+        print("")
+    else:
+        laatsteKoers = df_Koers.iloc[-2,df_Koers.columns.get_loc(stock[ii][0])]
+        print(laatsteKoers)
+    print("")
+    df_DKoers[stock[ii][0]] /= laatsteKoers
+
+
+
+
+
+#print(df_Koers.iloc[[-1]])
+#print("----")
+#print(df_Koers.iloc[-1,:])
+
 
 
 
@@ -121,4 +143,28 @@ fig = {'data': tracer, 'layout': {
     }}
 
 py.plot(fig,filename='log_koersen_norm.html')
+
+# In[7]: Plot the normalized data
+# De grafiek laat de koersen zien, maar deze zijn naar 1 genormaliseerd op het moment van aankoop
+
+tracer = []
+#loop over stocks
+for ii in range(0,len(stock)):
+    tracer.append(scatterStockData(df_DKoers,stock[ii][0],stock[ii][4]))
+#scatter a line at unity
+tracer.append(scatterUnity(df_DKoers))
+
+fig = {'data': tracer, 'layout': {
+        'xaxis': {'title': 'Datum', 'range': [ytd,today]},
+        'yaxis': {'title': 'Koers sluit genormaliseerd [-]', 'type': 'lin'}
+    }}
+
+py.plot(fig,filename='koersen_norm_sluit.html')
+
+fig = {'data': tracer, 'layout': {
+        'xaxis': {'title': 'Datum', 'range': [ytd,today]},
+        'yaxis': {'title': 'Koers sluit genormaliseerd [-]', 'type': 'log'}
+    }}
+
+py.plot(fig,filename='log_koersen_norm_sluit.html')
 
