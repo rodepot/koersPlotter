@@ -29,9 +29,9 @@ def downl_ohlcv(name,link):
 def read_stock(name,link,typ):
     # routine to check is a cached file is present of the most recent (daily) data. If not then downloaded. If yes, then chache
     # cache is loaded.
-    if os.path.isfile(name) == True:
-        if pd.to_datetime(dt.datetime.now()).floor('1D') == pd.to_datetime(os.path.getmtime(name),unit='s').floor('1D'):
-            f = open(name,'rb')
+    if os.path.isfile("data/"+name) == True:
+        if pd.to_datetime(dt.datetime.now()).floor('1D') == pd.to_datetime(os.path.getmtime("data/"+name),unit='s').floor('1D'):
+            f = open("data/"+name,'rb')
             df_final = pickle.load(f)
             print('Loaded {} from cache'.format(name))
         else:
@@ -40,15 +40,15 @@ def read_stock(name,link,typ):
                 df_final = downl_ohlcv(name,link)
             elif typ == 'price':
                 df_final = downl_price(name,link)
-            df_final.to_pickle(name)
+            df_final.to_pickle("data/"+name)
             print('Cached {} at {}'.format(link, name))
-    elif os.path.isfile(name) == False:
+    elif os.path.isfile("data/"+name) == False:
         print('Downloading {}'.format(link))
         if typ == 'ohlcv':
             df_final = downl_ohlcv(name,link)
         elif typ == 'price':
             df_final = downl_price(name,link)
-        df_final.to_pickle(name)
+        df_final.to_pickle("data/"+name)
         print('Cached {} at {}'.format(link, name))
     return df_final
 #url_Ves = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&id=0P0000BHUH]3]0]E0WWE$$ALL'

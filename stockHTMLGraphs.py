@@ -48,6 +48,24 @@ stock = [
         ['VAsiaPac','2018-12-24',baseURLprice+url_VAP,'price','#a01de2'],	
         ]
 
+stock = [
+        ['BASF','2015-08-18',baseURLprice+url_Bas,'price','#d62728'],
+#        ['InterX','2016-10-24',baseURLprice+url_Int,'price','#9467bd'],
+        ['Nordex','2017-02-16',baseURLprice+url_Nor,'price','#1f77b4'],
+        ['Vestas','2017-02-16',baseURLprice+url_Ves,'price','#17becf'],
+        ['Geely','2017-11-21',baseURLprice+url_Gee,'price','#2ca02c'],
+        ['Cooper','2018-06-07',baseURLprice+url_Coo,'price','#cca0cc'],
+        ['vanEck','2017-03-23',baseURLprice+url_Eck,'price','#7f7f7f'],
+        ['Candriam','2015-04-13',baseURLprice+url_Can,'price','#ff7f0e'],
+        ['RobAgri','2015-06-26',baseURLprice+url_Rob,'price','#2ca02c'],
+        ['Silver','2015-05-22',baseURLprice+url_Sil,'price','#8c564b'],
+        ['VTStock','2016-03-31',baseURLprice+url_VTS,'price','#e377c2'],
+        ['VTBond','2016-03-31',baseURLprice+url_VTB,'price','#bcbd22'],
+        ['Gold','2018-08-31',baseURLprice+url_Gol,'price','#ac1d22'],
+        ['VAsiaPac','2018-12-24',baseURLprice+url_VAP,'price','#a01de2'],
+        ]
+
+
 import datetime
 today = str(datetime.date.today())
 ytd = str(datetime.date.today() - datetime.timedelta(12*365/12))
@@ -107,17 +125,17 @@ for ii in range(0,len(stock)):
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum', 'range': [ytd,today]},
-        'yaxis': {'title': 'Koers [EUR]', 'type': 'lin'}
+        'yaxis': {'title': 'Koers [EUR]', 'type': 'linear'}
     }}
 
-py.plot(fig, filename='koersen.html')
+py.plot(fig, filename='./html/koersen.html')
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum', 'range': [ytd,today]},
         'yaxis': {'title': 'Koers [EUR]', 'type': 'log'}
     }}
 
-py.plot(fig, filename='log_koersen.html')
+py.plot(fig, filename='./html/log_koersen.html')
 
 
 # In[7]: Plot the normalized data
@@ -132,17 +150,17 @@ tracer.append(scatterUnity(df_NKoers))
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum', 'range': [ytd,today]},
-        'yaxis': {'title': 'Koers aankoop genormaliseerd [-]', 'type': 'lin'}
+        'yaxis': {'title': 'Koers aankoop genormaliseerd [-]', 'type': 'linear'}
     }}
 
-py.plot(fig,filename='koersen_norm.html')
+py.plot(fig,filename='./html/koersen_norm.html')
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum', 'range': [ytd,today]},
         'yaxis': {'title': 'Koers aankoop genormaliseerd [-]', 'type': 'log'}
     }}
 
-py.plot(fig,filename='log_koersen_norm.html')
+py.plot(fig,filename='./html/log_koersen_norm.html')
 
 # In[7]: Plot the normalized data
 # De grafiek laat de koersen zien, maar deze zijn naar 1 genormaliseerd op het moment van aankoop
@@ -156,15 +174,15 @@ tracer.append(scatterUnity(df_DKoers))
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum', 'range': [ytd,today]},
-        'yaxis': {'title': 'Koers sluit genormaliseerd [-]', 'type': 'lin'}
+        'yaxis': {'title': 'Koers sluit genormaliseerd [-]', 'type': 'linear'}
     }}
 
-py.plot(fig,filename='koersen_norm_sluit.html')
+py.plot(fig,filename='./html/koersen_norm_sluit.html')
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum', 'range': [ytd,today]},
         'yaxis': {'title': 'Koers sluit genormaliseerd [-]', 'type': 'log'}
     }}
 
-py.plot(fig,filename='log_koersen_norm_sluit.html')
+py.plot(fig,filename='./html/log_koersen_norm_sluit.html')
 
