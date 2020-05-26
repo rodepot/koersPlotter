@@ -9,8 +9,11 @@
 
 # In[1]:
 
-
+import pandas as pd
 import plotly.offline as py
+from getStockData import read_stock
+import datetime
+from scatterStockData import scatterStockData, scatterStockBuy, scatterUnity
 
 # In[2]:
 baseURLohlcv = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&'
@@ -30,6 +33,7 @@ url_VTS = 'id=0P00002DAJ]2]0]ETALL$$ALL'
 url_VTB = 'id=0P0000896G]2]0]ETALL$$ALL'
 url_Gol = 'id=0P00002DCW]2]0]ETALL$$ALL'
 url_VAP = 'id=0P0000Z13D]2]0]ETALL$$ALL'
+url_EAS = 'id=0P0000MM6D]2]0]ETALL$$ALL'
 
 stock = [
         ['BASF','2015-08-18',baseURLohlcv+url_Bas,'ohlcv','#d62728'],
@@ -63,22 +67,37 @@ stock = [
         ['VTBond','2016-03-31',baseURLprice+url_VTB,'price','#bcbd22'],
         ['Gold','2018-08-31',baseURLprice+url_Gol,'price','#ac1d22'],
         ['VAsiaPac','2018-12-24',baseURLprice+url_VAP,'price','#a01de2'],
+        ['EasyJet','2020-05-14',baseURLprice+url_EAS,'price','#9467bd'],
         ]
 
+investments = {
+        'BASF':{'datum_aankoop':'2015-08-18','url_morningstar':url_Bas,'color':'#d62728'},
+#        'InterX':{'datum_aankoop':'2016-10-24','url_morningstar':url_Int,'color':'#9467bd'},
+        'Nordex':{'datum_aankoop':'2017-02-16','url_morningstar':url_Nor,'color':'#1f77b4'},
+        'Vestas':{'datum_aankoop':'2017-02-16','url_morningstar':url_Ves,'color':'#17becf'},
+        'Geely':{'datum_aankoop':'2017-11-21','url_morningstar':url_Gee,'color':'#2ca02c'},
+        'Cooper':{'datum_aankoop':'2018-06-07','url_morningstar':url_Coo,'color':'#cca0cc'},
+        'vanEck':{'datum_aankoop':'2017-03-23','url_morningstar':url_Eck,'color':'#7f7f7f'},
+        'Candriam':{'datum_aankoop':'2015-04-13','url_morningstar':url_Can,'color':'#ff7f0e'},
+        'RobAgri':{'datum_aankoop':'2015-06-26','url_morningstar':url_Rob,'color':'#2ca02c'},
+        'Silver':{'datum_aankoop':'2015-05-22','url_morningstar':url_Sil,'color':'#8c564b'},
+        'VTStock':{'datum_aankoop':'2016-03-31','url_morningstar':url_VTS,'color':'#e377c2'},
+        'VTBond':{'datum_aankoop':'2016-03-31','url_morningstar':url_VTB,'color':'#bcbd22'},
+        'Gold':{'datum_aankoop':'2018-08-31','url_morningstar':url_Gol,'color':'#ac1d22'},
+        'VAsiaPac':{'datum_aankoop':'2018-12-24','url_morningstar':url_VAP,'color':'#a01de2'},
+        'EasyJet':{'datum_aankoop':'2020-05-14','url_morningstar':url_EAS,'color':'#9467bd'},
+        }
 
-import datetime
 today = str(datetime.date.today())
 ytd = str(datetime.date.today() - datetime.timedelta(12*365/12))
 
 
 # In[3]: Get all data and put it in one variable (df_Koers)
-from getStockData import read_stock
 
-ii = 0
-df_Koers = read_stock(stock[ii][0],stock[ii][2],stock[ii][3])
-#loop over remaining stocks
-for ii in range(1,len(stock)):
-    df_Koers = df_Koers.combine_first(read_stock(stock[ii][0],stock[ii][2],stock[ii][3]))
+df_Koers = pd.DataFrame()
+#loop over stocks
+for stock in investments:
+    df_Koers = df_Koers.combine_first(read_stock(stock, investments[stock]))
 
 
 # In[5]: Normalize data to date of purchase
@@ -87,41 +106,29 @@ df_NKoers = df_Koers.copy()
 df_DKoers = df_Koers.copy()
 
 #loop over stocks
-for ii in range(0,len(stock)):
-    df_NKoers[stock[ii][0]] /= df_Koers.loc[stock[ii][1],stock[ii][0]]
-    print(stock[ii][0])
-    #print(df_Koers.columns.get_loc(stock[ii][0]))
-    laatsteKoers = df_Koers.iloc[-1,df_Koers.columns.get_loc(stock[ii][0])]
-    print(laatsteKoers)
+for stock in investments:
+    # TODO: drop_na()
+    df_NKoers[stock] /= df_Koers.loc[investments[stock]['datum_aankoop'],stock]
+    print('Normalizing stock: {}'.format(stock))
+    laatsteKoers = df_Koers.iloc[-1,df_Koers.columns.get_loc(stock)]
     if laatsteKoers > 0:
-        print("")
+        pass
     else:
-        laatsteKoers = df_Koers.iloc[-2,df_Koers.columns.get_loc(stock[ii][0])]
-        print(laatsteKoers)
-    print("")
-    df_DKoers[stock[ii][0]] /= laatsteKoers
-
-
-
-
-
-#print(df_Koers.iloc[[-1]])
-#print("----")
-#print(df_Koers.iloc[-1,:])
-
-
-
+        laatsteKoers = df_Koers.iloc[-2,df_Koers.columns.get_loc(stock)]
+    print('Last close: {}\n'.format(laatsteKoers))
+    df_DKoers[stock] /= laatsteKoers
 
 # In[6]: Plot all stock data and write to HTML
     
-from scatterStockData import scatterStockData, scatterStockBuy, scatterUnity
 # De  grafiek laat de koersen zien met een horizontale lijn en verticale lijn bij aankoop. 
 
 tracer = []
 #loop over stocks
-for ii in range(0,len(stock)):
-    tracer.append(scatterStockData(df_Koers,stock[ii][0],stock[ii][4]))
-    tracer.append(scatterStockBuy(df_Koers,stock[ii][0],stock[ii][1],stock[ii][4])) 
+print('Generating "./html/koersen.html" and "./html/log_koersen.html"')
+for stock in investments:
+    print('\t{}'.format(stock))
+    tracer.append(scatterStockData(df_Koers,stock,investments[stock]['color']))
+    tracer.append(scatterStockBuy(df_Koers,stock,investments[stock]['datum_aankoop'],investments[stock]['color'])) 
 
 fig = {'data': tracer, 'layout': {
         'xaxis': {'title': 'Datum', 'range': [ytd,today]},
@@ -143,8 +150,10 @@ py.plot(fig, filename='./html/log_koersen.html')
 
 tracer = []
 #loop over stocks
-for ii in range(0,len(stock)):
-    tracer.append(scatterStockData(df_NKoers,stock[ii][0],stock[ii][4]))
+print('Generating "./html/koersen_norm.html" and "./html/log_koersen_norm.html"')
+for stock in investments:
+    print('\t{}'.format(stock))
+    tracer.append(scatterStockData(df_NKoers,stock,investments[stock]['color']))
 #scatter a line at unity
 tracer.append(scatterUnity(df_NKoers))
 
@@ -167,8 +176,10 @@ py.plot(fig,filename='./html/log_koersen_norm.html')
 
 tracer = []
 #loop over stocks
-for ii in range(0,len(stock)):
-    tracer.append(scatterStockData(df_DKoers,stock[ii][0],stock[ii][4]))
+print('Generating "./html/koersen_norm_sluit.html" and "./html/log_koersen_norm_sluit.html"')
+for stock in investments:
+    print('\t{}'.format(stock))
+    tracer.append(scatterStockData(df_DKoers,stock,investments[stock]['color']))
 #scatter a line at unity
 tracer.append(scatterUnity(df_DKoers))
 

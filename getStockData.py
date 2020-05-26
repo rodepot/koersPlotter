@@ -3,7 +3,13 @@ import pickle
 import os
 import pandas as pd
 
-def downl_price(name,link):
+import yfinance as yf
+#msft = yf.Ticker("MSFT")
+#msft.info
+#msft.history(period="max")
+
+
+def downl_morningstar(name,link):
     # Routine to read in price jsons from Morningstar, this is most often with ETFs and indexes. Name and link are both strings.
     # returns a pandas dataframe
     df_data = pd.read_json(link)
@@ -26,30 +32,35 @@ def downl_ohlcv(name,link):
     df_final.index = pd.to_datetime(df_final.index,unit='ms').round('1D')
     return df_final
 
-def read_stock(name,link,typ):
+def stockHist(ticker):
+    stock = yf.Ticker(ticker)
+    df = pd.DataFrame(stock.history(period="max"))
+#    stock = yf.Ticker('EZJ.L')
+#    print(stock.info)
+    return df
+
+
+def read_stock(name, stock):
     # routine to check is a cached file is present of the most recent (daily) data. If not then downloaded. If yes, then chache
     # cache is loaded.
-    if os.path.isfile("data/"+name) == True:
-        if pd.to_datetime(dt.datetime.now()).floor('1D') == pd.to_datetime(os.path.getmtime("data/"+name),unit='s').floor('1D'):
-            f = open("data/"+name,'rb')
+    pickleFile = "data/"+name+'.pkl'
+    baseURL = 'http://tools.morningstar.nl/api/rest.svc/timeseries_price/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&priceType=&outputType=COMPACTJSON&'
+    link = baseURL + stock['url_morningstar']
+    if os.path.isfile(pickleFile):
+        if pd.to_datetime(dt.datetime.now()).floor('1D') == pd.to_datetime(os.path.getmtime(pickleFile),unit='s').floor('1D'):
+            f = open(pickleFile,'rb')
             df_final = pickle.load(f)
             print('Loaded {} from cache'.format(name))
         else:
             print('Downloading {}'.format(link))
-            if typ == 'ohlcv':
-                df_final = downl_ohlcv(name,link)
-            elif typ == 'price':
-                df_final = downl_price(name,link)
-            df_final.to_pickle("data/"+name)
+            df_final = downl_morningstar(name,link)
+            df_final.to_pickle(pickleFile)
             print('Cached {} at {}'.format(link, name))
-    elif os.path.isfile("data/"+name) == False:
+    else:
         print('Downloading {}'.format(link))
-        if typ == 'ohlcv':
-            df_final = downl_ohlcv(name,link)
-        elif typ == 'price':
-            df_final = downl_price(name,link)
-        df_final.to_pickle("data/"+name)
-        print('Cached {} at {}'.format(link, name))
+        df_final = downl_morningstar(name,link)
+        df_final.to_pickle(pickleFile)
+        print('Cached {} at {}'.format(name, link))
     return df_final
 #url_Ves = 'http://tools.morningstar.nl/api/rest.svc/timeseries_ohlcv/8qe8f2nger?currencyId=EUR&idtype=Morningstar&frequency=daily&startDate=2008-01-01&performanceType=&outputType=COMPACTJSON&id=0P0000BHUH]3]0]E0WWE$$ALL'
 #df_Ves = read_ohlcv('Ves',url_Ves)
